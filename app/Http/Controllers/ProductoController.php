@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProductoRequest;
 use App\Models\Producto;
 use Illuminate\Http\Request;
 
@@ -21,26 +22,19 @@ class ProductoController extends Controller
      */
     public function create()
     {
-        return view('productos.create');
+        return view('productos-create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ProductoRequest $request)
     {
-        $validated = $request->validate([
-            'sku' => 'required|integer|unique:productos',
-            'nombre' => 'required|string',
-            'descripcion' => 'nullable|string',
-            'cantidad' => 'required|numeric',
-            'precio' => 'required|numeric',
-            'total' => 'required|numeric',
-            'fecha_creacion' => 'nullable|date',
-        ]);
+        $productoValidado = $request->validated();
+        $productoValidado['total'] = $productoValidado['cantidad'] * $productoValidado['precio'];
+        Producto::create($productoValidado);
 
-        Producto::create($validated);
-        return redirect()->route('productos.index')->with('success', 'Producto creado correctamente.');
+        return redirect()->route('productos.index')->with('success', 'Producto creado correctamente');
     }
 
     /**
@@ -54,36 +48,29 @@ class ProductoController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Producto $producto)
     {
-        return view('productos.edit', compact('producto'));
+        return view('productos-create', compact('producto'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(ProductoRequest $request, Producto $producto)
     {
-        $validated = $request->validate([
-            'sku' => 'required|integer|unique:productos,sku,' . $producto->id,
-            'nombre' => 'required|string',
-            'descripcion' => 'nullable|string',
-            'cantidad' => 'required|numeric',
-            'precio' => 'required|numeric',
-            'total' => 'required|numeric',
-            'fecha_creacion' => 'nullable|date',
-        ]);
+        $productoValidado = $request->validated();
+        $productoValidado['total'] = $productoValidado['cantidad'] * $productoValidado['precio'];
+        $producto->update($productoValidado);
 
-        $producto->update($validated);
-        return redirect()->route('productos.index')->with('success', 'Producto actualizado correctamente.');
+        return redirect()->route('productos.index')->with('success', 'Producto actualizado correctamente');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Producto $producto)
     {
         $producto->delete();
-        return redirect()->route('productos.index')->with('success', 'Producto eliminado correctamente.');
+        return redirect()->route('productos.index')->with('success', 'Producto eliminado correctamente');
     }
 }

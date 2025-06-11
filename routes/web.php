@@ -4,8 +4,12 @@ use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+
 Route::get('/', function () {
-    return view('welcome');
+    return redirect(route('login'));
 });
 
 Route::get('/dashboard', function () {
@@ -18,6 +22,6 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::resource('productos', ProductoController::class)->names('productos');
+Route::resource('productos', ProductoController::class)->names('productos')->middleware('auth');
 
 require __DIR__.'/auth.php';
