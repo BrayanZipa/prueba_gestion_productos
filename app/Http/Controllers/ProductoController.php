@@ -92,9 +92,9 @@ class ProductoController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Producto $producto)
+    public function destroy(Request $request, Producto $producto)
     {
         $producto->delete();
-        return redirect()->route('productos.index')->with('success', 'Producto eliminado correctamente');
+        return response()->json(['success' => true, 'message' => 'Producto eliminado correctamente']);
     }
 }

@@ -70,12 +70,30 @@
         </div>
     </div>
 
+    <div class="modal fade" id="modalEliminar" tabindex="-1" aria-labelledby="modal1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="modal1">¿Esta seguro de querer eliminar el producto seleccionado?</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" id="modal-btn-eliminar" class="btn btn-danger" data-bs-dismiss="modal">Aceptar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     @push('scripts')
         <script src="https://cdn.datatables.net/v/bs5/jq-3.7.0/dt-2.3.2/r-3.0.4/datatables.min.js" integrity="sha384-hw3H608pBQC0bs/NkFNMmggoElJm4Vk7hTXlmsQPkBSxT8Nqu8Db40A+OIJAlLu7" crossorigin="anonymous"></script>
 
         <script>
+            let tabla;
+
             $(function() {
-                let tabla = $('#productos-table').DataTable({
+                tabla = $('#productos-table').DataTable({
                     processing: true,
                     serverSide: true,
                     // searching: false,
@@ -128,7 +146,52 @@
                 });
 
                 $('#min_precio, #max_precio, #min_total, #max_total').on('keyup change', function () {
-                    tabla.draw()
+                    tabla.draw();
+                });
+            });
+        </script>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                let idSeleccionado;
+
+                function showModal(modalId) {
+                    const myModal = new bootstrap.Modal(document.getElementById(modalId), {
+                        keyboard: false
+                    })
+                    myModal.show();
+                }
+
+                document.addEventListener('click', async function (e) {
+                    const button = e.target.closest('.btn-eliminar');
+                    if (!button) return;
+
+                    idSeleccionado = button.dataset.id;
+                    showModal('modalEliminar');
+                });
+
+                // Evento cuando el usuario confirma la eliminación en el modal
+                document.getElementById('modal-btn-eliminar').addEventListener('click', async function () {
+                    if (!idSeleccionado) return;
+
+                    try {
+                        const response = await fetch(`/productos/${idSeleccionado}`, {
+                            method: 'DELETE',
+                            headers: {
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                                'Accept': 'application/json',
+                                // 'X-Requested-With': 'XMLHttpRequest'
+                            }
+                        });
+
+                        const data = await response.json();
+                        if (data.success) tabla.draw();
+
+                    } catch (error) {
+                        console.error(error);
+                    } finally {
+                        idSeleccionado = null;
+                    }
                 });
             });
         </script>
