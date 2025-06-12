@@ -19,7 +19,25 @@ class ProductoController extends Controller
 
     public function productosData(Request $request){
         if($request->ajax()){
-            return DataTables::of(Producto::query())->make(true);
+            $query = Producto::query();
+
+            if ($request->filled('min_precio')) {
+                $query->where('precio', '>=', $request->min_precio);
+            }
+
+            if ($request->filled('max_precio')) {
+                $query->where('precio', '<=', $request->max_precio);
+            }
+
+            if ($request->filled('min_total')) {
+                $query->where('total', '>=', $request->min_total);
+            }
+
+            if ($request->filled('max_total')) {
+                $query->where('total', '<=', $request->max_total);
+            }
+
+            return DataTables::of($query)->make(true);
         }
     }
 
