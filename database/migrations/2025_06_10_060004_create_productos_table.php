@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->integer('sku')->unique();
             $table->string('nombre');
-            $table->text('descripcion');
+            $table->text('descripcion')->nullable();
             $table->float('cantidad');
             $table->float('precio');
             $table->float('total');

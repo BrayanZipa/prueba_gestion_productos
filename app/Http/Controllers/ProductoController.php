@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProductoRequest;
 use App\Models\Producto;
 use Illuminate\Http\Request;
+use Yajra\DataTables\DataTables;
 
 class ProductoController extends Controller
 {
@@ -13,8 +14,13 @@ class ProductoController extends Controller
      */
     public function index()
     {
-        $productos = Producto::paginate(10);
-        return view('productos.index', compact('productos'));
+        return view('productos');
+    }
+
+    public function productosData(Request $request){
+        if($request->ajax()){
+            return DataTables::of(Producto::query())->make(true);
+        }
     }
 
     /**

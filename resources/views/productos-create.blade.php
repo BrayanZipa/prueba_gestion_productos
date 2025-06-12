@@ -1,8 +1,13 @@
 <x-app-layout>
+    <x-slot name="header">
+        <h2 class="text-center font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+            {{ __('Formulario de producto') }}
+        </h2>
+    </x-slot>
+    
     <div class="container-fluid">
         <div class="row justify-content-center mt-3">
             <div class="col-sm-12 col-md-6 mt-3">
-                <h4 class="text-center mb-3">Formulario de producto</h4>
                 <form id="formulario" action="{{ isset($producto) ? route('productos.update', $producto) : route('productos.store') }}" method="POST">
                     @csrf
 
@@ -63,7 +68,7 @@
                             </span>
                         @enderror
                     </div>
-                    <button type="submit" class="btn btn-primary">Registrar</button>
+                    <button type="submit" class="btn btn-primary">Crear</button>
                 </form>
             </div>
         </div>
