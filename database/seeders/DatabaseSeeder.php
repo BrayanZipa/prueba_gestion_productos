@@ -23,6 +23,6 @@ class DatabaseSeeder extends Seeder
             $user->save();
         }
 
-        Producto::factory(20)->create();
+        Producto::factory(30)->create();
     }
 }
