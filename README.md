@@ -45,6 +45,6 @@ O alternativamente puedes crear una nueva cuenta desde el formulario de registro
 
 ## Proyecto
 
-![Crud](public/images/crud.png)
+![Crud](public/images/crud.PNG)
 
-![Formulario](public/images/formulario.png)
+![Formulario](public/images/formulario.PNG)
