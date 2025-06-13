@@ -101,6 +101,7 @@
                     responsive: true,
                     autoWidth: true,
                     pageLength: 10,
+                    order: [[0, 'desc']],  
                     ajax: {
                         url: '{{ route("productos.data") }}',
                         data: function (d) {
@@ -137,7 +138,7 @@
                         }
                     ],
                     language: {
-                        url: '//cdn.datatables.net/plug-ins/2.3.2/i18n/es-CO.json',
+                        url: 'https://cdn.datatables.net/plug-ins/2.3.2/i18n/es-CO.json'
                     }
                 });
 
