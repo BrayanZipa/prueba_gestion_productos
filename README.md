@@ -42,3 +42,9 @@ Contraseña: test123*
 O alternativamente puedes crear una nueva cuenta desde el formulario de registro
 
 ```
+
+## Proyecto
+
+![Crud](public/images/crud.png)
+
+![Formulario](public/images/formulario.png)

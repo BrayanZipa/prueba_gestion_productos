@@ -93,6 +93,7 @@
             let tabla;
 
             $(function() {
+                // Inicialización y configuración de Datatables para mostrar los registros de productos
                 tabla = $('#productos-table').DataTable({
                     processing: true,
                     serverSide: true,
@@ -142,10 +143,12 @@
                     }
                 });
 
+                // Evento para cuando el usuario escribe en el campo con ID "buscador"
                 $('#buscador').on('keyup', function() {
                     tabla.search(this.value).draw();
                 });
 
+                // Evento para cuando el usuario escribe o cambia alguno de los inputs de filtros de precios o totales
                 $('#min_precio, #max_precio, #min_total, #max_total').on('keyup change', function () {
                     tabla.draw();
                 });
@@ -156,6 +159,11 @@
             document.addEventListener('DOMContentLoaded', () => {
                 let idSeleccionado;
 
+                /**
+                 * Muestra un modal de Bootstrap dado su ID
+                 *
+                 * @param {string} modalId - El ID del modal que se desea mostrar
+                 */
                 function showModal(modalId) {
                     const myModal = new bootstrap.Modal(document.getElementById(modalId), {
                         keyboard: false
@@ -163,6 +171,7 @@
                     myModal.show();
                 }
 
+                // Evento global para cualquier clic en el documento, se usa para capturar los clicks en los botones de eliminar
                 document.addEventListener('click', async function (e) {
                     const button = e.target.closest('.btn-eliminar');
                     if (!button) return;
@@ -171,7 +180,7 @@
                     showModal('modalEliminar');
                 });
 
-                // Evento cuando el usuario confirma la eliminación en el modal
+                // Evento cuando el usuario confirma la eliminación en el modal, realiza una consulta fetch para eliminar el producto
                 document.getElementById('modal-btn-eliminar').addEventListener('click', async function () {
                     if (!idSeleccionado) return;
 

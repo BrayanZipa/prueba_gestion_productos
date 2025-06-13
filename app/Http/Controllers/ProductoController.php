@@ -10,13 +10,19 @@ use Yajra\DataTables\DataTables;
 class ProductoController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Mostrar una lista de los productos
      */
     public function index()
     {
         return view('productos');
     }
 
+    /**
+     * Función para obtener los registros paginados de los productos por medio de una consulta ajax
+     * 
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function productosData(Request $request){
         if($request->ajax()){
             $query = Producto::query();
@@ -42,7 +48,7 @@ class ProductoController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Mostrar el formulario para crear un nuevo producto
      */
     public function create()
     {
@@ -50,7 +56,10 @@ class ProductoController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Almacenar un producto creado, se hace uso de los Requests de Laravel para realizar las validaciones
+     * 
+     * @param ProductoRequest $request
+     * @return RedirectResponse
      */
     public function store(ProductoRequest $request)
     {
@@ -62,15 +71,7 @@ class ProductoController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        
-    }
-
-    /**
-     * Show the form for editing the specified resource.
+     * Mostrar el formulario para editar un producto especifico
      */
     public function edit(Producto $producto)
     {
@@ -78,7 +79,11 @@ class ProductoController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Actualizar un producto especifico y almacenarlo, se hace uso de los Requests de Laravel para realizar las validaciones
+     * 
+     * @param ProductoRequest $request
+     * @param Producto $producto
+     * @return RedirectResponse
      */
     public function update(ProductoRequest $request, Producto $producto)
     {
@@ -90,9 +95,12 @@ class ProductoController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Eliminar un producto del almacenamiento
+     * 
+     * @param Producto $producto
+     * @return JsonResponse
      */
-    public function destroy(Request $request, Producto $producto)
+    public function destroy(Producto $producto)
     {
         $producto->delete();
         return response()->json(['success' => true, 'message' => 'Producto eliminado correctamente']);
